@@ -14,7 +14,7 @@ public class Main {
         contato.setIdade(78);
         contato.setDataCadastro(new Date());
 
-        //Atualizar Contato
+
         Contato contato1 = new Contato();
         contato1.setNome("Corinthians da Silva Silva");
         contato1.setIdade(37);
@@ -22,12 +22,23 @@ public class Main {
         contato1.setId(1);
 
 
-        ContatoDAO contatoDAO = new ContatoDAO();
-       // contatoDAO.insert(contato);
-        //contatoDAO.update(contato1);
 
+
+        ContatoDAO contatoDAO = new ContatoDAO();
+         //Create
+          contatoDAO.insert(contato);
+
+        //Read
         for(Contato c : contatoDAO.getContatos()){
             System.out.println("Contato: " + c.getNome());
         }
+
+        //Update
+         contatoDAO.update(contato1);
+
+        //Delete
+          contatoDAO.deleteByID(2);
+
+
     }
 }
