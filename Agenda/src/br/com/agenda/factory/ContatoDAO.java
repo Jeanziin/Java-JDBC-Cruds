@@ -5,6 +5,10 @@ import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ContatoDAO {
@@ -31,4 +35,37 @@ public class ContatoDAO {
         }
     }
 
+    public List<Contato> getContatos(){
+        String sql = "SELECT * FROM contatos";
+        List<Contato> contatos = new ArrayList<>();
+
+        Connection conn = null;
+        JdbcPreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try{
+            conn = ConnectionFactory.createConnectionToMySQl();
+            preparedStatement = (JdbcPreparedStatement) conn.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+
+            while(resultSet.next()){
+                Contato contato = new Contato();
+                 contato.setId(resultSet.getInt("id"));
+                 contato.setNome(resultSet.getString("nome"));
+                 contato.setIdade(resultSet.getInt("idade"));
+                 contato.setDataCadastro(resultSet.getDate("datacadastro"));
+
+
+                 contatos.add(contato);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            ConnectionFactory.closeJdbcPreparedStatement(preparedStatement);
+            ConnectionFactory.closeResultSet(resultSet);
+            ConnectionFactory.closeConnection(conn);
+        }
+        return contatos;
+    }
 }

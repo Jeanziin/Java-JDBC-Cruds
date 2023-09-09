@@ -9,9 +9,16 @@ import java.util.Date;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Contato contato = new Contato("Jean", 18, new Date());
+        Contato contato = new Contato();
+        contato.setNome("Corinthians da Silva");
+        contato.setIdade(78);
+        contato.setDataCadastro(new Date());
 
         ContatoDAO contatoDAO = new ContatoDAO();
         contatoDAO.insert(contato);
+
+        for(Contato c : contatoDAO.getContatos()){
+            System.out.println("Contato: " + c.getNome());
+        }
     }
 }

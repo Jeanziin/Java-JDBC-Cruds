@@ -4,6 +4,7 @@ import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
@@ -35,6 +36,16 @@ public class ConnectionFactory {
             stm.close();
         } catch (SQLException e){
             System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public static void closeResultSet(ResultSet rs){
+        if(rs != null){
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
     }
