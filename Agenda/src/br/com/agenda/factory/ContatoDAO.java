@@ -3,10 +3,7 @@ package br.com.agenda.factory;
 import br.com.agenda.model.Contato;
 import com.mysql.cj.jdbc.JdbcPreparedStatement;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,4 +65,29 @@ public class ContatoDAO {
         }
         return contatos;
     }
+
+    public void update(Contato contato){
+        String sql = "UPDATE contatos SET nome = ?, idade = ?, datacadastro = ? " +
+                "WHERE id = ?";
+        Connection conn = null;
+        JdbcPreparedStatement preparedStatement = null;
+
+        try{
+            conn = ConnectionFactory.createConnectionToMySQl();
+            preparedStatement = (JdbcPreparedStatement) conn.prepareStatement(sql);
+            preparedStatement.setString(1, contato.getNome());
+            preparedStatement.setInt(2, contato.getIdade());
+            preparedStatement.setDate(3, new Date(contato.getDataCadastro().getTime()));
+
+            preparedStatement.setInt(4, contato.getId());
+            preparedStatement.execute();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }finally {
+            ConnectionFactory.closeJdbcPreparedStatement(preparedStatement);
+            ConnectionFactory.closeConnection(conn);
+        }
+    }
+
+    public void delete()
 }
